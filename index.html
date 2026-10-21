@@ -38,7 +38,7 @@
         <!-- ہیڈر -->
         <header class="text-center mb-6">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
-                <span>⚡ Ultra-Fast Vision Engine Active</span>
+                <span>⚡ Active Vision Engine</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                 Mudassar Viral SEO Engine
@@ -155,7 +155,6 @@
     </div>
 
     <script>
-        // آپ کی Groq API Key
         const GROQ_KEY = "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";
         let currentBase64Url = null;
 
@@ -203,7 +202,7 @@
         const PROMPT_TEMPLATE = `
 Analyze this image thoroughly:
 1. Detect any text on the image (Urdu, Arabic, Quranic verse, Hadith, quotes, poetry) and transcribe accurately.
-2. Identify the visual landmarks (Kaaba, Masjid Nabawi, domes, minarets, nighttime, crowd, etc.).
+2. Identify visual landmarks (Kaaba, Masjid Nabawi, domes, minarets, night, crowd, etc.).
 3. Return strictly using these exact delimiters:
 
 ===HASHTAGS===
@@ -253,59 +252,74 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
             scanStatus.classList.remove('hidden');
             resultsArea.classList.add('hidden');
 
-            try {
-                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${GROQ_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: "llama-3.2-11b-vision-preview",
-                        messages: [
-                            {
-                                role: "user",
-                                content: [
-                                    { type: "text", text: PROMPT_TEMPLATE },
-                                    {
-                                        type: "image_url",
-                                        image_url: { url: currentBase64Url }
-                                    }
-                                ]
-                            }
-                        ],
-                        temperature: 0.3,
-                        max_tokens: 2048
-                    })
-                });
+            // Groq کے نئے ایکٹو ویژن ماڈلز
+            const visionModels = [
+                "qwen/qwen3.8-27b",
+                "meta-llama/llama-4-scout-17b-16e-instruct"
+            ];
 
-                const data = await response.json();
+            let rawOutput = null;
+            let lastErr = "";
 
-                scanStatus.classList.add('hidden');
+            for (const modelName of visionModels) {
+                try {
+                    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${GROQ_KEY}`
+                        },
+                        body: JSON.stringify({
+                            model: modelName,
+                            messages: [
+                                {
+                                    role: "user",
+                                    content: [
+                                        { type: "text", text: PROMPT_TEMPLATE },
+                                        {
+                                            type: "image_url",
+                                            image_url: { url: currentBase64Url }
+                                        }
+                                    ]
+                                }
+                            ],
+                            temperature: 0.3,
+                            max_tokens: 2048
+                        })
+                    });
 
-                if (data.choices && data.choices[0].message) {
-                    const rawOutput = data.choices[0].message.content;
+                    const data = await response.json();
 
-                    function extract(start, end) {
-                        if (!rawOutput.includes(start)) return "";
-                        const part = rawOutput.split(start)[1];
-                        return end && part.includes(end) ? part.split(end)[0].trim() : part.trim();
+                    if (data.choices && data.choices[0].message) {
+                        rawOutput = data.choices[0].message.content;
+                        break;
+                    } else if (data.error) {
+                        lastErr = data.error.message;
                     }
-
-                    document.getElementById('tagsText').innerText = extract("===HASHTAGS===", "===TITLE===");
-                    document.getElementById('titleText').innerText = extract("===TITLE===", "===DESCRIPTION===");
-                    document.getElementById('descText').innerText = extract("===DESCRIPTION===", "===METADATA===");
-                    document.getElementById('metaText').innerText = extract("===METADATA===", "===SOUND===");
-                    document.getElementById('soundText').innerText = extract("===SOUND===", null);
-
-                    resultsArea.classList.remove('hidden');
-                    resultsArea.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    alert("خرابی: " + (data.error?.message || "درخواست مکمل نہ ہو سکی"));
+                } catch (e) {
+                    lastErr = e.message;
                 }
-            } catch (err) {
-                scanStatus.classList.add('hidden');
-                alert("کنکشن ایرر: " + err.message);
+            }
+
+            scanStatus.classList.add('hidden');
+
+            if (rawOutput) {
+                function extract(start, end) {
+                    if (!rawOutput.includes(start)) return "";
+                    const part = rawOutput.split(start)[1];
+                    return end && part.includes(end) ? part.split(end)[0].trim() : part.trim();
+                }
+
+                document.getElementById('tagsText').innerText = extract("===HASHTAGS===", "===TITLE===");
+                document.getElementById('titleText').innerText = extract("===TITLE===", "===DESCRIPTION===");
+                document.getElementById('descText').innerText = extract("===DESCRIPTION===", "===METADATA===");
+                document.getElementById('metaText').innerText = extract("===METADATA===", "===SOUND===");
+                document.getElementById('soundText').innerText = extract("===SOUND===", null);
+
+                resultsArea.classList.remove('hidden');
+                resultsArea.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert("خرابی: " + (lastErr || "درخواست مکمل نہ ہو سکی"));
             }
         }
 
@@ -327,7 +341,7 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
                         'Authorization': `Bearer ${GROQ_KEY}`
                     },
                     body: JSON.stringify({
-                        model: "llama-3.3-70b-versatile",
+                        model: "openai/gpt-oss-120b",
                         messages: [
                             { role: "system", content: "You are a helpful assistant. Reply concisely in Urdu or English as preferred by user." },
                             { role: "user", content: msg }
