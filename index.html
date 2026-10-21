@@ -38,7 +38,7 @@
         <!-- ہیڈر -->
         <header class="text-center mb-6">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
-                <span>⚡ Active & Official Header Connected</span>
+                <span>⚡ Mudassar AI Engine Active</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                 Mudassar Viral SEO Engine
@@ -155,7 +155,8 @@
     </div>
 
     <script>
-        const BUILTIN_KEY = "AQ.Ab8RN6I0zyUvTmSeWcbGPDslbQE99RrysEqWMb8wh5CtL4W9ng";
+        // آپ کی نئی 100% مکمل API Key
+        const BUILTIN_KEY = "AQ.Ab8RN6IzZoI4iTCFl5siDqV3FXY-ZLMnr1IadokUbluJWb8yLg";
         let currentBase64 = null;
 
         function autoScanImage(event) {
@@ -263,20 +264,19 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
                 generationConfig: { temperature: 0.3, maxOutputTokens: 2048 }
             };
 
-            // گوگل کی آفیشل دستاویزات کے مطابق درست اینڈ پوائنٹ اور x-goog-api-key ہیڈر (بغیر کسی Bearer کے)
             const models = ["gemini-2.5-flash", "gemini-1.5-flash"];
             let rawOutput = null;
             let capturedError = "";
 
             for (const model of models) {
                 try {
+                    // درست طریقہ: صرف URL میں key پاس کی جاتی ہے، ہیڈرز میں کوئی اضافی ٹوکن نہیں
                     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${BUILTIN_KEY}`;
                     
                     const res = await fetch(url, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'x-goog-api-key': BUILTIN_KEY
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(payload)
                     });
@@ -330,10 +330,7 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${BUILTIN_KEY}`;
                 const res = await fetch(url, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'x-goog-api-key': BUILTIN_KEY
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: "You are a helpful assistant. Reply concisely in Urdu or English as preferred by user. Query: " + msg }] }]
                     })
