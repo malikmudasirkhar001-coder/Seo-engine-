@@ -28,32 +28,36 @@
 </head>
 <body class="min-h-screen pb-24 selection:bg-emerald-500 selection:text-white">
 
+    <!-- نوٹیفکیشن ٹوسٹ -->
     <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-5 py-2.5 rounded-full shadow-2xl text-xs sm:text-sm font-semibold transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
         <span>کاپی ہو گیا!</span>
     </div>
 
     <div class="max-w-2xl mx-auto px-4 pt-8">
 
+        <!-- ہیڈر -->
         <header class="text-center mb-6">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
-                <span>⚡ Mudassar AI Engine Active</span>
+                <span>⚡ Ultra-Fast Vision Engine Active</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                 Mudassar Viral SEO Engine
             </h1>
             <p class="text-slate-400 text-xs sm:text-sm mt-1">
-                صرف تصویر چنیں — سسٹم خودکار طریقے سے تصویر اسکین کر کے ہیش ٹیگز تیار کرے گا
+                صرف تصویر چنیں — AI خودکار طریقے سے تصویر اسکین کر کے وائرل ہیش ٹیگز تیار کرے گا
             </p>
         </header>
 
+        <!-- اسٹیٹس بینر -->
         <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-2xl px-4 py-3 mb-6 flex items-center justify-between text-xs">
             <span class="text-slate-300 flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>سسٹم اور AI کلید مکمل طور پر ایکٹو ہے</span>
+                <span>AI ویژن انجن اور کی مکمل طور پر ایکٹو ہے</span>
             </span>
             <span class="text-emerald-400 font-semibold">100% Ready</span>
         </div>
 
+        <!-- تصویر اپلوڈ سیکشن -->
         <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 mb-6 text-center shadow-xl">
             <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="autoScanImage(event)">
             
@@ -74,14 +78,17 @@
                 </div>
             </div>
 
+            <!-- اسکیننگ پراسیس -->
             <div id="scanStatus" class="hidden mt-4 p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-center gap-3 text-emerald-400 text-xs font-semibold">
                 <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 <span>تصویر اور تحریر کا تجزیہ کیا جا رہا ہے، برائے مہربانی چند سیکنڈ انتظار کریں...</span>
             </div>
         </div>
 
+        <!-- تمام رزلٹ کارڈز -->
         <div id="resultsArea" class="hidden space-y-4 mb-8">
             
+            <!-- کارڈ 1: وائرل ہیش ٹیگز -->
             <div class="bg-slate-900 border border-emerald-500/40 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">🔥 وائرل ہیش ٹیگز (Viral Hashtags)</span>
@@ -90,6 +97,7 @@
                 <pre id="tagsText" class="text-xs sm:text-sm text-emerald-200/95 leading-relaxed font-semibold"></pre>
             </div>
 
+            <!-- کارڈ 2: ویڈیو ٹائٹل -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">📌 ویڈیو ٹائٹل (Title)</span>
@@ -98,6 +106,7 @@
                 <pre id="titleText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></pre>
             </div>
 
+            <!-- کارڈ 3: ڈسکرپشن -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">📝 فارمیٹ ڈسکرپشن (Description / Body)</span>
@@ -106,6 +115,7 @@
                 <pre id="descText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></pre>
             </div>
 
+            <!-- کارڈ 4: ایس ای او کی ورڈز -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">🔍 میٹا ڈیٹا و کی ورڈز (Metadata & Keywords)</span>
@@ -114,6 +124,7 @@
                 <pre id="metaText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></pre>
             </div>
 
+            <!-- کارڈ 5: ساؤنڈ تجویز -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-rose-400 uppercase tracking-wider">🎵 ساؤنڈ تجاویز (Sound Suggestions)</span>
@@ -124,6 +135,7 @@
 
         </div>
 
+        <!-- AI اسسٹنٹ چیٹ سیکشن -->
         <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl">
             <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-2">
                 <span>💬 مدثر اسسٹنٹ چیٹ (کوئی بھی اضافی سوال پوچھیں)</span>
@@ -143,8 +155,9 @@
     </div>
 
     <script>
-        const BUILTIN_KEY = "AQ.Ab8RN6IzZoI4iTCFl5siDqV3FXY-ZLMnr1IadokUbluJWb8yLg";
-        let currentBase64 = null;
+        // آپ کی Groq API Key
+        const GROQ_KEY = "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";
+        let currentBase64Url = null;
 
         function autoScanImage(event) {
             const file = event.target.files[0];
@@ -174,10 +187,9 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.80);
-                    currentBase64 = compressedDataUrl.split(',')[1];
+                    currentBase64Url = canvas.toDataURL('image/jpeg', 0.80);
 
-                    document.getElementById('imagePreview').src = compressedDataUrl;
+                    document.getElementById('imagePreview').src = currentBase64Url;
                     document.getElementById('uploadPrompt').classList.add('hidden');
                     document.getElementById('previewContainer').classList.remove('hidden');
 
@@ -241,67 +253,60 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
             scanStatus.classList.remove('hidden');
             resultsArea.classList.add('hidden');
 
-            const payload = {
-                contents: [{
-                    parts: [
-                        { text: PROMPT_TEMPLATE },
-                        { inline_data: { mime_type: "image/jpeg", data: currentBase64 } }
-                    ]
-                }],
-                generationConfig: { temperature: 0.3, maxOutputTokens: 2048 }
-            };
+            try {
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${GROQ_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "llama-3.2-11b-vision-preview",
+                        messages: [
+                            {
+                                role: "user",
+                                content: [
+                                    { type: "text", text: PROMPT_TEMPLATE },
+                                    {
+                                        type: "image_url",
+                                        image_url: { url: currentBase64Url }
+                                    }
+                                ]
+                            }
+                        ],
+                        temperature: 0.3,
+                        max_tokens: 2048
+                    })
+                });
 
-            const models = ["gemini-2.5-flash", "gemini-1.5-flash"];
-            let rawOutput = null;
-            let capturedError = "";
+                const data = await response.json();
 
-            for (const model of models) {
-                try {
-                    // آفیشل درست فارمیٹ: URL میں کوئی ?key= نہیں، صرف x-goog-api-key ہیڈر
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-                    
-                    const res = await fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-goog-api-key': BUILTIN_KEY
-                        },
-                        body: JSON.stringify(payload)
-                    });
+                scanStatus.classList.add('hidden');
 
-                    const data = await res.json();
-                    if (res.ok && data.candidates && data.candidates[0].content) {
-                        rawOutput = data.candidates[0].content.parts[0].text;
-                        break;
-                    } else if (data.error) {
-                        capturedError = data.error.message || JSON.stringify(data.error);
+                if (data.choices && data.choices[0].message) {
+                    const rawOutput = data.choices[0].message.content;
+
+                    function extract(start, end) {
+                        if (!rawOutput.includes(start)) return "";
+                        const part = rawOutput.split(start)[1];
+                        return end && part.includes(end) ? part.split(end)[0].trim() : part.trim();
                     }
-                } catch (e) {
-                    capturedError = e.message;
+
+                    document.getElementById('tagsText').innerText = extract("===HASHTAGS===", "===TITLE===");
+                    document.getElementById('titleText').innerText = extract("===TITLE===", "===DESCRIPTION===");
+                    document.getElementById('descText').innerText = extract("===DESCRIPTION===", "===METADATA===");
+                    document.getElementById('metaText').innerText = extract("===METADATA===", "===SOUND===");
+                    document.getElementById('soundText').innerText = extract("===SOUND===", null);
+
+                    resultsArea.classList.remove('hidden');
+                    resultsArea.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert("خرابی: " + (data.error?.message || "درخواست مکمل نہ ہو سکی"));
                 }
+            } catch (err) {
+                scanStatus.classList.add('hidden');
+                alert("کنکشن ایرر: " + err.message);
             }
-
-            scanStatus.classList.add('hidden');
-
-            if (!rawOutput) {
-                alert("گوگل API ایرر:\n" + (capturedError || "رسپانس وصول نہیں ہوا"));
-                return;
-            }
-
-            function extract(start, end) {
-                if (!rawOutput.includes(start)) return "";
-                const part = rawOutput.split(start)[1];
-                return end && part.includes(end) ? part.split(end)[0].trim() : part.trim();
-            }
-
-            document.getElementById('tagsText').innerText = extract("===HASHTAGS===", "===TITLE===");
-            document.getElementById('titleText').innerText = extract("===TITLE===", "===DESCRIPTION===");
-            document.getElementById('descText').innerText = extract("===DESCRIPTION===", "===METADATA===");
-            document.getElementById('metaText').innerText = extract("===METADATA===", "===SOUND===");
-            document.getElementById('soundText').innerText = extract("===SOUND===", null);
-
-            resultsArea.classList.remove('hidden');
-            resultsArea.scrollIntoView({ behavior: 'smooth' });
         }
 
         async function sendAssistantMessage() {
@@ -315,20 +320,23 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
             history.scrollTop = history.scrollHeight;
 
             try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`;
-                const res = await fetch(url, {
+                const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
-                        'x-goog-api-key': BUILTIN_KEY
+                        'Authorization': `Bearer ${GROQ_KEY}`
                     },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: "You are a helpful assistant. Reply concisely in Urdu or English as preferred by user. Query: " + msg }] }]
+                        model: "llama-3.3-70b-versatile",
+                        messages: [
+                            { role: "system", content: "You are a helpful assistant. Reply concisely in Urdu or English as preferred by user." },
+                            { role: "user", content: msg }
+                        ]
                     })
                 });
                 const data = await res.json();
-                if (data.candidates && data.candidates[0].content) {
-                    const reply = data.candidates[0].content.parts[0].text;
+                if (data.choices && data.choices[0].message) {
+                    const reply = data.choices[0].message.content;
                     history.innerHTML += `<div class="text-left text-sky-400 font-semibold">اسسٹنٹ: <span class="text-slate-300 font-normal">${reply}</span></div>`;
                 } else if(data.error) {
                     history.innerHTML += `<div class="text-rose-400">ایرر: ${data.error.message}</div>`;
