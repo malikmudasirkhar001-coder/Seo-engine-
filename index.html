@@ -154,8 +154,12 @@
 
     </div>
 
+    <!-- یہاں ہم نے آپ کی API Key والی فائل کو لنک کر دیا ہے -->
+    <script src="config.js"></script>
+
     <script>
-        const GROQ_KEY = "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";
+        // اب GROQ_KEY یہاں ڈیفائن نہیں ہے، یہ config.js سے آ رہی ہے۔
+        
         let currentBase64Url = null;
 
         function autoScanImage(event) {
@@ -252,53 +256,45 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
             scanStatus.classList.remove('hidden');
             resultsArea.classList.add('hidden');
 
-            // Groq کے نئے ایکٹو ویژن ماڈلز
-            const visionModels = [
-                "qwen/qwen3.8-27b",
-                "meta-llama/llama-4-scout-17b-16e-instruct"
-            ];
-
+            const visionModel = "qwen/qwen3.8-27b";
             let rawOutput = null;
             let lastErr = "";
 
-            for (const modelName of visionModels) {
-                try {
-                    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${GROQ_KEY}`
-                        },
-                        body: JSON.stringify({
-                            model: modelName,
-                            messages: [
-                                {
-                                    role: "user",
-                                    content: [
-                                        { type: "text", text: PROMPT_TEMPLATE },
-                                        {
-                                            type: "image_url",
-                                            image_url: { url: currentBase64Url }
-                                        }
-                                    ]
-                                }
-                            ],
-                            temperature: 0.3,
-                            max_tokens: 2048
-                        })
-                    });
+            try {
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${GROQ_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: visionModel,
+                        messages: [
+                            {
+                                role: "user",
+                                content: [
+                                    { type: "text", text: PROMPT_TEMPLATE },
+                                    {
+                                        type: "image_url",
+                                        image_url: { url: currentBase64Url }
+                                    }
+                                ]
+                            }
+                        ],
+                        temperature: 0.3,
+                        max_tokens: 2048
+                    })
+                });
 
-                    const data = await response.json();
+                const data = await response.json();
 
-                    if (data.choices && data.choices[0].message) {
-                        rawOutput = data.choices[0].message.content;
-                        break;
-                    } else if (data.error) {
-                        lastErr = data.error.message;
-                    }
-                } catch (e) {
-                    lastErr = e.message;
+                if (data.choices && data.choices[0].message) {
+                    rawOutput = data.choices[0].message.content;
+                } else if (data.error) {
+                    lastErr = data.error.message;
                 }
+            } catch (e) {
+                lastErr = e.message;
             }
 
             scanStatus.classList.add('hidden');
