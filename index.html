@@ -38,13 +38,13 @@
         <!-- ہیڈر -->
         <header class="text-center mb-6">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
-                <span>⚡ Active & Pre-Configured</span>
+                <span>⚡ Active & Dual-Auth Supported</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                 Mudassar Viral SEO Engine
             </h1>
             <p class="text-slate-400 text-xs sm:text-sm mt-1">
-                صرف تصویر سلیکٹ کریں — سسٹم خودکار طریقے سے تصویر پڑھ کر وائرل ہیش ٹیگز تیار کرے گا
+                صرف تصویر چنیں — سسٹم خودکار طریقے سے تصویر اسکین کر کے ہیش ٹیگز تیار کرے گا
             </p>
         </header>
 
@@ -155,11 +155,9 @@
     </div>
 
     <script>
-        // آپ کی API Key بلٹ اِن محفوظ کر دی گئی ہے
         const BUILTIN_KEY = "AQ.Ab8RN6I0zyUvTmSeWcbGPDslbQE99RrysEqWMb8wh5CtL4W9ng";
         let currentBase64 = null;
 
-        // تصویر منتخب ہوتے ہی خودکار اسکین کا عمل
         function autoScanImage(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -168,11 +166,10 @@
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    // موبائل براؤزر کے لیے آٹو آپٹمائزیشن
                     const canvas = document.createElement('canvas');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 1200;
+                    const maxDim = 1000;
 
                     if (width > maxDim || height > maxDim) {
                         if (width > height) {
@@ -189,15 +186,13 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.80);
                     currentBase64 = compressedDataUrl.split(',')[1];
 
-                    // پری ویو
                     document.getElementById('imagePreview').src = compressedDataUrl;
                     document.getElementById('uploadPrompt').classList.add('hidden');
                     document.getElementById('previewContainer').classList.remove('hidden');
 
-                    // بغیر کسی بٹن دبائے خودکار اسکین
                     executeScan();
                 };
                 img.src = e.target.result;
@@ -206,13 +201,13 @@
         }
 
         const PROMPT_TEMPLATE = `
-Analyze this image thoroughly. 
-1. Check for any written text on the image (Urdu, Arabic, Quranic verse, Hadith, quotes, poetry) and recognize it fully.
-2. Identify the visual subjects, landmarks (e.g., Kaaba, Masjid-e-Nabawi, architecture, moon, sky, crowd, emotion).
-3. Output strictly using these exact delimiters:
+Analyze this image thoroughly:
+1. Detect any text on the image (Urdu, Arabic, Quranic verse, Hadith, quotes, poetry) and transcribe accurately.
+2. Identify the visual landmarks (Kaaba, Masjid Nabawi, domes, minarets, nighttime, crowd, etc.).
+3. Return strictly using these exact delimiters:
 
 ===HASHTAGS===
-[12-16 viral high-engagement hashtags strictly starting with # matching this image and theme]
+[12-16 viral high-engagement hashtags strictly starting with # matching this image]
 
 ===TITLE===
 [Emotional viral title with 1-2 relevant emojis]
@@ -258,25 +253,35 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
             scanStatus.classList.remove('hidden');
             resultsArea.classList.add('hidden');
 
-            const models = ["gemini-2.5-flash", "gemini-1.5-flash"];
+            const payload = {
+                contents: [{
+                    parts: [
+                        { text: PROMPT_TEMPLATE },
+                        { inline_data: { mime_type: "image/jpeg", data: currentBase64 } }
+                    ]
+                }],
+                generationConfig: { temperature: 0.3, maxOutputTokens: 2048 }
+            };
+
+            const endpoints = [
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`,
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent`
+            ];
+
             let rawOutput = null;
+            let capturedError = "";
 
-            for (const model of models) {
+            for (const ep of endpoints) {
                 try {
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${BUILTIN_KEY}`;
-                    const payload = {
-                        contents: [{
-                            parts: [
-                                { text: PROMPT_TEMPLATE },
-                                { inline_data: { mime_type: "image/jpeg", data: currentBase64 } }
-                            ]
-                        }],
-                        generationConfig: { temperature: 0.3, maxOutputTokens: 2048 }
-                    };
-
-                    const res = await fetch(url, {
+                    // AQ فارمیٹ کے لیے دونوں مستند طریقے ہیڈرز میں پاس ہوتے ہیں
+                    const res = await fetch(ep, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-goog-api-key': BUILTIN_KEY,
+                            'Authorization': `Bearer ${BUILTIN_KEY}`
+                        },
                         body: JSON.stringify(payload)
                     });
 
@@ -284,16 +289,18 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
                     if (res.ok && data.candidates && data.candidates[0].content) {
                         rawOutput = data.candidates[0].content.parts[0].text;
                         break;
+                    } else if (data.error) {
+                        capturedError = data.error.message || JSON.stringify(data.error);
                     }
                 } catch (e) {
-                    console.error("Model error, trying fallback: ", e);
+                    capturedError = e.message;
                 }
             }
 
             scanStatus.classList.add('hidden');
 
             if (!rawOutput) {
-                alert("خرابی: تصویر پروسیس نہ ہو سکی۔ براہ کرم اپنا انٹرنیٹ کنکشن چیک کر کے دوبارہ ٹرائی کریں۔");
+                alert("گوگل API ایرر:\n" + (capturedError || "رسپانس وصول نہیں ہوا"));
                 return;
             }
 
@@ -313,7 +320,6 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
             resultsArea.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // اسسٹنٹ چیٹ فنکشن
         async function sendAssistantMessage() {
             const input = document.getElementById('chatInput');
             const msg = input.value.trim();
@@ -325,10 +331,13 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
             history.scrollTop = history.scrollHeight;
 
             try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${BUILTIN_KEY}`;
-                const res = await fetch(url, {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': BUILTIN_KEY,
+                        'Authorization': `Bearer ${BUILTIN_KEY}`
+                    },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: "You are a helpful assistant. Reply concisely in Urdu or English as preferred by user. Query: " + msg }] }]
                     })
@@ -337,14 +346,15 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
                 if (data.candidates && data.candidates[0].content) {
                     const reply = data.candidates[0].content.parts[0].text;
                     history.innerHTML += `<div class="text-left text-sky-400 font-semibold">اسسٹنٹ: <span class="text-slate-300 font-normal">${reply}</span></div>`;
+                } else if(data.error) {
+                    history.innerHTML += `<div class="text-rose-400">ایرر: ${data.error.message}</div>`;
                 }
             } catch (err) {
-                history.innerHTML += `<div class="text-rose-400">جواب لانے میں مسئلہ ہوا: ${err.message}</div>`;
+                history.innerHTML += `<div class="text-rose-400">کنکشن ایرر: ${err.message}</div>`;
             }
             history.scrollTop = history.scrollHeight;
         }
 
-        // کاپی فنکشن
         function copyToClipboard(id) {
             const text = document.getElementById(id).innerText;
             if (!text) return;
