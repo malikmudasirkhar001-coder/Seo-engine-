@@ -154,12 +154,10 @@
 
     </div>
 
-    <!-- یہاں ہم نے آپ کی API Key والی فائل کو لنک کر دیا ہے -->
+    <!-- API Key والی فائل -->
     <script src="config.js"></script>
 
     <script>
-        // اب GROQ_KEY یہاں ڈیفائن نہیں ہے، یہ config.js سے آ رہی ہے۔
-        
         let currentBase64Url = null;
 
         function autoScanImage(event) {
@@ -282,7 +280,7 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
                             }
                         ],
                         temperature: 0.3,
-                        max_tokens: 2048
+                        max_tokens: 800 // لمٹ کو کم کر دیا گیا ہے
                     })
                 });
 
@@ -341,7 +339,8 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
                         messages: [
                             { role: "system", content: "You are a helpful assistant. Reply concisely in Urdu or English as preferred by user." },
                             { role: "user", content: msg }
-                        ]
+                        ],
+                        max_tokens: 800 // چیٹ کے لیے بھی لمٹ کم کر دی گئی ہے
                     })
                 });
                 const data = await res.json();
