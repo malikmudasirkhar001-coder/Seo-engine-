@@ -28,14 +28,12 @@
 </head>
 <body class="min-h-screen pb-24 selection:bg-emerald-500 selection:text-white">
 
-    <!-- نوٹیفکیشن ٹوسٹ -->
     <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-5 py-2.5 rounded-full shadow-2xl text-xs sm:text-sm font-semibold transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
         <span>کاپی ہو گیا!</span>
     </div>
 
     <div class="max-w-2xl mx-auto px-4 pt-8">
 
-        <!-- ہیڈر -->
         <header class="text-center mb-6">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
                 <span>⚡ Mudassar AI Engine Active</span>
@@ -48,7 +46,6 @@
             </p>
         </header>
 
-        <!-- اسٹیٹس بینر -->
         <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-2xl px-4 py-3 mb-6 flex items-center justify-between text-xs">
             <span class="text-slate-300 flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -57,7 +54,6 @@
             <span class="text-emerald-400 font-semibold">100% Ready</span>
         </div>
 
-        <!-- تصویر اپلوڈ سیکشن -->
         <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 mb-6 text-center shadow-xl">
             <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="autoScanImage(event)">
             
@@ -78,17 +74,14 @@
                 </div>
             </div>
 
-            <!-- اسکیننگ پراسیس -->
             <div id="scanStatus" class="hidden mt-4 p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-center gap-3 text-emerald-400 text-xs font-semibold">
                 <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 <span>تصویر اور تحریر کا تجزیہ کیا جا رہا ہے، برائے مہربانی چند سیکنڈ انتظار کریں...</span>
             </div>
         </div>
 
-        <!-- تمام رزلٹ کارڈز -->
         <div id="resultsArea" class="hidden space-y-4 mb-8">
             
-            <!-- کارڈ 1: وائرل ہیش ٹیگز -->
             <div class="bg-slate-900 border border-emerald-500/40 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">🔥 وائرل ہیش ٹیگز (Viral Hashtags)</span>
@@ -97,7 +90,6 @@
                 <pre id="tagsText" class="text-xs sm:text-sm text-emerald-200/95 leading-relaxed font-semibold"></pre>
             </div>
 
-            <!-- کارڈ 2: ویڈیو ٹائٹل -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">📌 ویڈیو ٹائٹل (Title)</span>
@@ -106,7 +98,6 @@
                 <pre id="titleText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></pre>
             </div>
 
-            <!-- کارڈ 3: ڈسکرپشن -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">📝 فارمیٹ ڈسکرپشن (Description / Body)</span>
@@ -115,7 +106,6 @@
                 <pre id="descText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></pre>
             </div>
 
-            <!-- کارڈ 4: ایس ای او کی ورڈز -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">🔍 میٹا ڈیٹا و کی ورڈز (Metadata & Keywords)</span>
@@ -124,7 +114,6 @@
                 <pre id="metaText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></pre>
             </div>
 
-            <!-- کارڈ 5: ساؤنڈ تجویز -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
                     <span class="text-xs font-bold text-rose-400 uppercase tracking-wider">🎵 ساؤنڈ تجاویز (Sound Suggestions)</span>
@@ -135,7 +124,6 @@
 
         </div>
 
-        <!-- AI اسسٹنٹ چیٹ سیکشن -->
         <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl">
             <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-2">
                 <span>💬 مدثر اسسٹنٹ چیٹ (کوئی بھی اضافی سوال پوچھیں)</span>
@@ -155,7 +143,6 @@
     </div>
 
     <script>
-        // آپ کی نئی 100% مکمل API Key
         const BUILTIN_KEY = "AQ.Ab8RN6IzZoI4iTCFl5siDqV3FXY-ZLMnr1IadokUbluJWb8yLg";
         let currentBase64 = null;
 
@@ -270,13 +257,14 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
 
             for (const model of models) {
                 try {
-                    // درست طریقہ: صرف URL میں key پاس کی جاتی ہے، ہیڈرز میں کوئی اضافی ٹوکن نہیں
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${BUILTIN_KEY}`;
+                    // آفیشل درست فارمیٹ: URL میں کوئی ?key= نہیں، صرف x-goog-api-key ہیڈر
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
                     
                     const res = await fetch(url, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'x-goog-api-key': BUILTIN_KEY
                         },
                         body: JSON.stringify(payload)
                     });
@@ -327,10 +315,13 @@ Top Keywords: [8-10 comma-separated high-ranking viral keywords]
             history.scrollTop = history.scrollHeight;
 
             try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${BUILTIN_KEY}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`;
                 const res = await fetch(url, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': BUILTIN_KEY
+                    },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: "You are a helpful assistant. Reply concisely in Urdu or English as preferred by user. Query: " + msg }] }]
                     })
