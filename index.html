@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mudassar Viral SEO Engine</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #060911;
+            color: #f1f5f9;
+        }
+        .urdu-text {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            line-height: 2.3;
+            direction: rtl;
+            text-align: right;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24 selection:bg-emerald-500 selection:text-white">
+
+    <!-- نوٹیفکیشن ٹوسٹ -->
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-5 py-2.5 rounded-full shadow-2xl text-xs sm:text-sm font-semibold transition-all duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
+        <span>کاپی ہو گیا!</span>
+    </div>
+
+    <div class="max-w-2xl mx-auto px-4 pt-8">
+
+        <!-- ہیڈر -->
+        <header class="text-center mb-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
+                <span>⚡ Active & Pre-Configured</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                Mudassar Viral SEO Engine
+            </h1>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">
+                صرف تصویر سلیکٹ کریں — سسٹم خودکار طریقے سے تصویر پڑھ کر وائرل ہیش ٹیگز تیار کرے گا
+            </p>
+        </header>
+
+        <!-- اسٹیٹس بینر -->
+        <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-2xl px-4 py-3 mb-6 flex items-center justify-between text-xs">
+            <span class="text-slate-300 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>سسٹم اور AI کلید مکمل طور پر ایکٹو ہے</span>
+            </span>
+            <span class="text-emerald-400 font-semibold">100% Ready</span>
+        </div>
+
+        <!-- تصویر اپلوڈ سیکشن -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 mb-6 text-center shadow-xl">
+            <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="autoScanImage(event)">
+            
+            <div onclick="document.getElementById('imageInput').click()" 
+                class="border-2 border-dashed border-slate-700 hover:border-emerald-500/80 bg-slate-950/70 rounded-xl p-8 cursor-pointer transition-all duration-200">
+                
+                <div id="uploadPrompt" class="space-y-3">
+                    <div class="w-14 h-14 mx-auto rounded-full bg-slate-800 flex items-center justify-center text-emerald-400 shadow-inner">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div class="text-base font-bold text-slate-100">تصویر منتخب کریں (Auto-Scan)</div>
+                    <div class="text-xs text-slate-400">تصویر چنتے ہی بغیر کسی بٹن کے فوری اسکین شروع ہو جائے گا</div>
+                </div>
+
+                <div id="previewContainer" class="hidden relative">
+                    <img id="imagePreview" class="max-h-72 mx-auto rounded-lg shadow-md object-contain border border-slate-800" alt="Preview">
+                    <div class="mt-3 text-xs text-emerald-400 font-medium">تصویر بدلنے کے لیے دوبارہ دبائیں ↺</div>
+                </div>
+            </div>
+
+            <!-- اسکیننگ پراسیس -->
+            <div id="scanStatus" class="hidden mt-4 p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-center gap-3 text-emerald-400 text-xs font-semibold">
+                <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <span>تصویر اور تحریر کا تجزیہ کیا جا رہا ہے، برائے مہربانی چند سیکنڈ انتظار کریں...</span>
+            </div>
+        </div>
+
+        <!-- تمام رزلٹ کارڈز -->
+        <div id="resultsArea" class="hidden space-y-4 mb-8">
+            
+            <!-- کارڈ 1: وائرل ہیش ٹیگز -->
+            <div class="bg-slate-900 border border-emerald-500/40 rounded-2xl p-4 shadow-xl">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                    <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">🔥 وائرل ہیش ٹیگز (Viral Hashtags)</span>
+                    <button onclick="copyToClipboard('tagsText')" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-lg transition-colors font-medium">Copy All</button>
+                </div>
+                <pre id="tagsText" class="text-xs sm:text-sm text-emerald-200/95 leading-relaxed font-semibold"></pre>
+            </div>
+
+            <!-- کارڈ 2: ویڈیو ٹائٹل -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                    <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">📌 ویڈیو ٹائٹل (Title)</span>
+                    <button onclick="copyToClipboard('titleText')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-1.5 rounded-lg border border-slate-700 transition-colors">Copy</button>
+                </div>
+                <pre id="titleText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></pre>
+            </div>
+
+            <!-- کارڈ 3: ڈسکرپشن -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">📝 فارمیٹ ڈسکرپشن (Description / Body)</span>
+                    <button onclick="copyToClipboard('descText')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-1.5 rounded-lg border border-slate-700 transition-colors">Copy</button>
+                </div>
+                <pre id="descText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></pre>
+            </div>
+
+            <!-- کارڈ 4: ایس ای او کی ورڈز -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                    <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">🔍 میٹا ڈیٹا و کی ورڈز (Metadata & Keywords)</span>
+                    <button onclick="copyToClipboard('metaText')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-1.5 rounded-lg border border-slate-700 transition-colors">Copy</button>
+                </div>
+                <pre id="metaText" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></pre>
+            </div>
+
+            <!-- کارڈ 5: ساؤنڈ تجویز -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                    <span class="text-xs font-bold text-rose-400 uppercase tracking-wider">🎵 ساؤنڈ تجاویز (Sound Suggestions)</span>
+                    <button onclick="copyToClipboard('soundText')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-1.5 rounded-lg border border-slate-700 transition-colors">Copy</button>
+                </div>
+                <pre id="soundText" class="urdu-text text-xs sm:text-sm text-slate-200"></pre>
+            </div>
+
+        </div>
+
+        <!-- AI اسسٹنٹ چیٹ سیکشن -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl">
+            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-2">
+                <span>💬 مدثر اسسٹنٹ چیٹ (کوئی بھی اضافی سوال پوچھیں)</span>
+            </h2>
+            <div id="chatHistory" class="bg-slate-950 border border-slate-800 rounded-xl p-3 h-36 overflow-y-auto space-y-2 text-xs mb-3">
+                <div class="text-slate-500 italic">یہاں آپ مجھ سے کوئی بھی شعر، ترجمہ، کیپشن یا مشورہ پوچھ سکتے ہیں...</div>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" id="chatInput" placeholder="اپنا سوال لکھیں..." onkeypress="if(event.key === 'Enter') sendAssistantMessage()"
+                    class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                <button type="button" onclick="sendAssistantMessage()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-4 py-2.5 rounded-xl font-medium shrink-0">
+                    بھیجیں
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // آپ کی API Key بلٹ اِن محفوظ کر دی گئی ہے
+        const BUILTIN_KEY = "AQ.Ab8RN6I0zyUvTmSeWcbGPDslbQE99RrysEqWMb8wh5CtL4W9ng";
+        let currentBase64 = null;
+
+        // تصویر منتخب ہوتے ہی خودکار اسکین کا عمل
+        function autoScanImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // موبائل براؤزر کے لیے آٹو آپٹمائزیشن
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 1200;
+
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                    currentBase64 = compressedDataUrl.split(',')[1];
+
+                    // پری ویو
+                    document.getElementById('imagePreview').src = compressedDataUrl;
+                    document.getElementById('uploadPrompt').classList.add('hidden');
+                    document.getElementById('previewContainer').classList.remove('hidden');
+
+                    // بغیر کسی بٹن دبائے خودکار اسکین
+                    executeScan();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        const PROMPT_TEMPLATE = `
+Analyze this image thoroughly. 
+1. Check for any written text on the image (Urdu, Arabic, Quranic verse, Hadith, quotes, poetry) and recognize it fully.
+2. Identify the visual subjects, landmarks (e.g., Kaaba, Masjid-e-Nabawi, architecture, moon, sky, crowd, emotion).
+3. Output strictly using these exact delimiters:
+
+===HASHTAGS===
+[12-16 viral high-engagement hashtags strictly starting with # matching this image and theme]
+
+===TITLE===
+[Emotional viral title with 1-2 relevant emojis]
+
+===DESCRIPTION===
+[Draft the 3-Formula Description]:
+[Catchphrase / Core calm hook]
+# # #* 3 Formula Moments from [Identified Location/Subject] *
+* * 1. [Specific Mode Name] * *
+[Sentence transforming scrolling into deep spiritual feeling and peace]
+- * * View/Reminder: * * [Specific details from image or text detected]
+- * * Atmosphere/Mood: * * [Atmosphere, peace, reverence, and sensory vibe]
+- * * Heart Focus: * * [Specific call to heart, e.g. whisper prayer/durood]
+- * * Action: * * Double tap to send intentions + save this peaceful view.
+* * * Vibes: * * * Pure tranquility, soulful barakah, and longing.
+
+* * 2. Pure Devotion Checklist * *
+The easiest way to heal a tired soul
+- * * Practice: * * [Actionable spiritual advice]
+- * * Sincere Dua: * * [Heartfelt prayer matching the post]
+- * * Sharing: * * [Call to share with loved ones]
+* * * Vibes: * * * Deep spiritual comfort and gentle peace.
+
+* * 3. Sacred Feeling / Reflection * *
+[Final emotional closure sentence]
+
+===METADATA===
+• Location/Theme: [Exact location or core theme]
+• Landmark/Objects: [Key visual objects or text from image]
+• Category: [Niche categories]
+• Search Intent: [Top 4 user search queries]
+
+Top Keywords: [8-10 comma-separated high-ranking viral keywords]
+
+===SOUND===
+[2-3 sound recommendations in Urdu, such as slow reverb naats, calming Quran recitation, or background BGM that directly fits this image's mood]
+`;
+
+        async function executeScan() {
+            const scanStatus = document.getElementById('scanStatus');
+            const resultsArea = document.getElementById('resultsArea');
+
+            scanStatus.classList.remove('hidden');
+            resultsArea.classList.add('hidden');
+
+            const models = ["gemini-2.5-flash", "gemini-1.5-flash"];
+            let rawOutput = null;
+
+            for (const model of models) {
+                try {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${BUILTIN_KEY}`;
+                    const payload = {
+                        contents: [{
+                            parts: [
+                                { text: PROMPT_TEMPLATE },
+                                { inline_data: { mime_type: "image/jpeg", data: currentBase64 } }
+                            ]
+                        }],
+                        generationConfig: { temperature: 0.3, maxOutputTokens: 2048 }
+                    };
+
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await res.json();
+                    if (res.ok && data.candidates && data.candidates[0].content) {
+                        rawOutput = data.candidates[0].content.parts[0].text;
+                        break;
+                    }
+                } catch (e) {
+                    console.error("Model error, trying fallback: ", e);
+                }
+            }
+
+            scanStatus.classList.add('hidden');
+
+            if (!rawOutput) {
+                alert("خرابی: تصویر پروسیس نہ ہو سکی۔ براہ کرم اپنا انٹرنیٹ کنکشن چیک کر کے دوبارہ ٹرائی کریں۔");
+                return;
+            }
+
+            function extract(start, end) {
+                if (!rawOutput.includes(start)) return "";
+                const part = rawOutput.split(start)[1];
+                return end && part.includes(end) ? part.split(end)[0].trim() : part.trim();
+            }
+
+            document.getElementById('tagsText').innerText = extract("===HASHTAGS===", "===TITLE===");
+            document.getElementById('titleText').innerText = extract("===TITLE===", "===DESCRIPTION===");
+            document.getElementById('descText').innerText = extract("===DESCRIPTION===", "===METADATA===");
+            document.getElementById('metaText').innerText = extract("===METADATA===", "===SOUND===");
+            document.getElementById('soundText').innerText = extract("===SOUND===", null);
+
+            resultsArea.classList.remove('hidden');
+            resultsArea.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // اسسٹنٹ چیٹ فنکشن
+        async function sendAssistantMessage() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            const history = document.getElementById('chatHistory');
+            history.innerHTML += `<div class="text-right text-emerald-400 font-semibold">آپ: <span class="text-slate-200 font-normal">${msg}</span></div>`;
+            input.value = "";
+            history.scrollTop = history.scrollHeight;
+
+            try {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${BUILTIN_KEY}`;
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: "You are a helpful assistant. Reply concisely in Urdu or English as preferred by user. Query: " + msg }] }]
+                    })
+                });
+                const data = await res.json();
+                if (data.candidates && data.candidates[0].content) {
+                    const reply = data.candidates[0].content.parts[0].text;
+                    history.innerHTML += `<div class="text-left text-sky-400 font-semibold">اسسٹنٹ: <span class="text-slate-300 font-normal">${reply}</span></div>`;
+                }
+            } catch (err) {
+                history.innerHTML += `<div class="text-rose-400">جواب لانے میں مسئلہ ہوا: ${err.message}</div>`;
+            }
+            history.scrollTop = history.scrollHeight;
+        }
+
+        // کاپی فنکشن
+        function copyToClipboard(id) {
+            const text = document.getElementById(id).innerText;
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => showToast("کاپی ہو گیا!"));
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
